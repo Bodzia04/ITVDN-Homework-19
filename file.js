@@ -49,21 +49,46 @@
         через alert
         */
 
-function asyncOperation() {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            let result = Math.floor(Math.random() * 5001);
-            if (result) {
-                resolve(result);
-            } else {
-                reject(new Error("Error!!!"));
-            }
-        }, 2000);
-    });
-}
+// function asyncOperation() {
+//     return new Promise(function (resolve, reject) {
+//         setTimeout(function () {
+//             let result = Math.floor(Math.random() * 5001);
+//             if (result) {
+//                 resolve(result);
+//             } else {
+//                 reject(new Error("Error!!!"));
+//             }
+//         }, 2000);
+//     });
+// }
 
-document.querySelector("button").addEventListener("click", function () {
-    asyncOperation()
-    .then((result) => alert(result))
-    .catch((error) => alert(error.message));
-});
+// document.querySelector("button").addEventListener("click", function () {
+//     asyncOperation()
+//     .then((result) => alert(result))
+//     .catch((error) => alert(error.message));
+// });
+
+//////////////////////////////////////////
+
+        /*
+        Задание 3:
+        Внесите правки в функцию asyncOperation. Эта функция представляет абстрактную асинхронную операцию, выполнение которой
+        занимает 2 секунды. Результатом асинхронной операции является случайное значение от 0 до 5000 (записывается в переменную 
+        result).
+        Необходимо внести правки в функцию asyncOperation и реализовать использование Promise для того
+        чтобы код, вызвавший asyncOperation, мог получить результат работы асинхронной операции. Добавьте обработчик на нажатие по
+        кнопке Запустить, вызовите асинхронную операцию и, используя Promise, обработайте результат, отобразив его 
+        через alert
+        */
+
+        function asyncOperation(callback) {
+            setTimeout(function () {
+                let result = Math.floor(Math.random() * 5001);
+                if(callback) callback(result);
+            }, 2000)
+        }
+
+        document.querySelector('button').addEventListener('click', function(){
+            asyncOperation(result => alert(result));
+        })
+    
