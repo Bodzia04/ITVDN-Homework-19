@@ -81,14 +81,59 @@
         через alert
         */
 
-        function asyncOperation(callback) {
-            setTimeout(function () {
-                let result = Math.floor(Math.random() * 5001);
-                if(callback) callback(result);
-            }, 2000)
+        // function asyncOperation(callback) {
+        //     setTimeout(function () {
+        //         let result = Math.floor(Math.random() * 5001);
+        //         if(callback) callback(result);
+        //     }, 2000)
+        // }
+
+        // document.querySelector('button').addEventListener('click', function(){
+        //     asyncOperation(result => alert(result));
+        // })
+
+////////////////////////////////////////////////        
+
+        /*
+        Задание 4:
+        Функция download имитирует асинхронную операцию, которая скачивает данные с сервера. На выполнение асинхронной 
+        операции затрачивается до 5 секунд времени. 
+        При нажатии на кнопку "Скачать" запустите метод download 5 раз и сделайте так чтобы в момент, когда все промисы перейдут
+        в состояние fulfilled, выведите сообщение "Всей файлы скачаны"
+        */
+
+        let isClick = false;
+        let value = 0;
+        let downoloadInputElement = document.querySelector('#downloadInput');
+        let downloadedDataElement = document.querySelector('#downloadedData');
+        let errorDownoladElement = document.querySelector('#errorDownolad');
+
+        function download() {
+                return new Promise(function (resolve, reject) {
+                let random = Math.floor(Math.random() * 5001);
+                setTimeout(() => resolve("downloaded data"), random);
+                });
         }
 
         document.querySelector('button').addEventListener('click', function(){
-            asyncOperation(result => alert(result));
-        })
-    
+                let promises = [];
+                let parallelOperationCount = 5;
+                if(value == 0){
+                        if(!isClick){
+                                downloadedDataElement.style.display = 'none'
+                                downoloadInputElement.style.display = 'block';
+
+                                for(let i = 0; i < parallelOperationCount; i++){
+                                        promises.push(download());
+                                }
+                                
+                                Promise.all(promises)
+                                .then(() => downloadedDataElement.style.display = 'block')
+                                .finally(() => downoloadInputElement.style.display = 'none')
+                                .finally(() => value++)
+                        }
+                } else{
+                        downloadedDataElement.style.display = 'none'
+                        errorDownoladElement.style.display = 'block';        
+                }
+        });
